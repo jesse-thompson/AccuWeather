@@ -2,10 +2,12 @@ import requests
 import configparser
 
 
+# exception for when a location is unable to be retrieved from the API
 class NoSuchLocation(Exception):
     pass
 
 
+# exception for when a response from the API is unable to be parsed
 class BadResponse(Exception):
     pass
 
@@ -65,7 +67,7 @@ def get_condition(key):
 def get_forecast(key):
     # takes key and sends request via "5 days of Daily Forecasts" API
     forecast_url = 'http://dataservice.accuweather.com/forecasts/v1/daily/5day/' + key + \
-                   '?apikey=d9fJjEd2jEjbMuj3hxDIjAaAZZdqUY5y'
+                   '?apikey={}'.format(get_apikey())
 
     # takes response and formats into json object
     response = requests.get(forecast_url)
@@ -108,6 +110,7 @@ def get_forecast(key):
 
 
 try:
+    # get the apikey from app.config
     apikey = get_apikey()
     # get the location key for a zipcode
     location_key = get_location()
